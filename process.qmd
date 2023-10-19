@@ -43,3 +43,61 @@ See `run.R` in this folder
 # Create a Dockerfile
 
 See `Dockerfile`
+
+# Create a Cloud Source Repository and push code to it
+
+This will prompt you to enable the API if you haven't yet.
+
+```bash
+# create repo
+gcloud source repos create ee-proj-123 --project=ee-proj-123
+
+#commit and push code
+git add .
+git commit -m "first commit"
+git remote add origin https://source.developers.google.com/p/ee-proj-123/r/ee-proj-123
+
+git push --all origin
+```
+
+# Create cloudbuild.yaml
+
+See `cloudbuild.yaml`
+
+# Create an Artifact Registry repository
+
+The artifact repository specified in the cloudbuild.yaml file above needs to exist for us to be able to push an image to it.
+
+This will also prompt us to enable the Artifact Registry API if we haven't already done so.
+
+```bash
+gcloud artifacts repositories create demo-repo --repository-format docker --location us-east4 --project=ee-proj-123
+```
+
+# Enable Cloud Build
+
+```bash
+gcloud services enable cloudbuild.googleapis.com
+```
+
+# Create a build trigger
+
+Builds whenever we push to the master branch of the repository we created. Will follow the specifications in `cloudbuild.yaml`
+
+```bash
+gcloud builds triggers create cloud-source-repositories --repo="ee-proj-123" --project=ee-proj-123  --branch-pattern="^master$" --name="push-master" --build-config="cloudbuild.yaml"
+```
+
+# Enable Cloud Run
+
+```bash
+gcloud services enable run.googleapis.com
+```
+
+# Try it out
+
+The trigger should run on a push
+
+```bash
+git push
+```
