@@ -1,0 +1,39 @@
+---
+title: "My Report"
+params:
+  n_row: 10
+format:
+  html:
+    embed-resources: true
+---
+
+This report will print `r params$n_row` rows from the palmer penguins dataset
+
+```{r}
+library(DBI)
+library(bigrquery)
+library(glue)
+
+n_row <- as.numeric(params$n_row)
+
+n <- min(c(344, n_row))
+proj <- "ee-proj-123"
+ds <- "penguins_data"
+tbl <- "penguins"
+
+con <- dbConnect(
+    bigrquery::bigquery(),
+    project = "ee-proj-123",
+    dataset = "penguins_data"
+)
+
+q <- glue_sql("
+    SELECT *
+    FROM `ee-proj-123.penguins_data.penguins`
+    LIMIT {n}
+")
+
+res <- dbGetQuery(con, q)
+
+res
+```

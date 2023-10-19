@@ -1,0 +1,45 @@
+---
+title: "Deploying a Plumber API with Big Query and Cloud Run"
+date: today
+---
+
+# Create a New Project
+
+```bash
+gcloud projects create ee-proj-123
+```
+
+# Load data into BigQuery
+
+Run this as an R script (`seed_bigquery.R`)
+
+```r
+library(bigrquery)
+library(palmerpenguins)
+
+x <- bq_dataset("ee-proj-123", "penguins_data")
+
+bq_dataset_create(x)
+
+y <- bq_table(x, "penguins")
+
+bq_table_create(y, fields = penguins)
+
+bq_table_upload(y, penguins)
+```
+
+# Create a report template
+
+See `report_template.qmd` in this folder
+
+# Create a plumber endpoint
+
+See `plumber.R` in this folder
+
+# Create a function to run your plumber endpoint
+
+See `run.R` in this folder
+
+# Create a Dockerfile
+
+See `Dockerfile`
