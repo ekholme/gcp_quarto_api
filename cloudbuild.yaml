@@ -10,5 +10,5 @@ steps:
 
   #deploy the container to cloud run
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['run', 'deploy', 'img', '--image', 'us-east4-docker.pkg.dev/${PROJECT_ID}/demo-repo/demo-image:$COMMIT_SHA', '--region', 'us-east4']
+    args: ['run', 'deploy', 'img', '--image', 'us-east4-docker.pkg.dev/${PROJECT_ID}/demo-repo/demo-image:$COMMIT_SHA', '--region', 'us-east4', '--max-instances=1', '--min-instances=0', '--allow-unauthenticated']
 timeout: 3600s
