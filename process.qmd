@@ -94,6 +94,16 @@ gcloud builds triggers create cloud-source-repositories --repo="ee-proj-123" --p
 gcloud services enable run.googleapis.com
 ```
 
+# Grant permissions to the service account
+
+```bash
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member="serviceAccount:<PROJECT_NUMBER>@cloudbuild.gserviceaccount.com" \
+  --role=roles/run.admin
+
+gcloud projects add-iam-policy-binding ee-proj-123 --member="serviceAccount:1083532087640@cloudbuild.gserviceaccount.com" --role=roles/iam.serviceAccountUser
+```
+
 # Try it out
 
 The trigger should run on a push

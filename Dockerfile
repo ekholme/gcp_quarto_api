@@ -1,14 +1,22 @@
+
 ARG QUARTO_VERSION="latest"
 
-FROM ghcr.io/quarto-dev/quarto:${QUARTO_VERSION}
+FROM ghcr.io/quarto-dev/quarto:${QUARTO_VERSION} AS QUARTO
 
-ENV DEBIAN_FRONTEND=noninteractive
+FROM rocker/r-ver:4.3
 
-RUN apt-get update && apt-get install -y r-base
+RUN apt update && apt install -y pandoc
 
-RUN Rscript -e "install.packages(c('plumber', 'quarto', 'DBI', 'bigrquery', 'glue'))"
+COPY --from=QUARTO /usr/local/bin/quarto /usr/local/bin/quarto
 
 COPY . .
+
+RUN install2.r --error --skipinstalled --ncpus -1 \
+    glue \
+    DBI \
+    bigrquery \
+    plumber \
+    quarto 
 
 ENV PORT 8080
 

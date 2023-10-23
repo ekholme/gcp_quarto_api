@@ -16,24 +16,32 @@ library(glue)
 
 n_row <- as.numeric(params$n_row)
 
-n <- min(c(344, n_row))
-proj <- "ee-proj-123"
-ds <- "penguins_data"
-tbl <- "penguins"
+n <- if (n_row > nrow(mtcars)) {
+    nrow(mtcars)
+} else {
+    n_row
+}
 
-con <- dbConnect(
-    bigrquery::bigquery(),
-    project = "ee-proj-123",
-    dataset = "penguins_data"
-)
+head(mtcars, n)
 
-q <- glue_sql("
-    SELECT *
-    FROM `ee-proj-123.penguins_data.penguins`
-    LIMIT {n}
-")
+# n <- min(c(344, n_row))
+# proj <- "ee-proj-123"
+# ds <- "penguins_data"
+# tbl <- "penguins"
 
-res <- dbGetQuery(con, q)
+# con <- dbConnect(
+#     bigrquery::bigquery(),
+#     project = "ee-proj-123",
+#     dataset = "penguins_data"
+# )
 
-res
+# q <- glue_sql("
+#     SELECT *
+#     FROM `ee-proj-123.penguins_data.penguins`
+#     LIMIT {n}
+# ")
+
+# res <- dbGetQuery(con, q)
+
+# res
 ```
