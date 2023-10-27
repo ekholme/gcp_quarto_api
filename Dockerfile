@@ -1,13 +1,12 @@
 
 ARG R_VER="latest"
-ARG QUARTO_VERSION="1.3.450"
 
 FROM rocker/verse:${R_VER} 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget
 
-RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v$QUARTO_VERSION/quarto-$QUARTO_VERSION-linux-amd64.deb -O ~/quarto.deb
+RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb -O ~/quarto.deb
 
 # Install the latest version of Quarto
 RUN apt-get install --yes ~/quarto.deb
