@@ -15,7 +15,7 @@ library(bigrquery)
 library(glue)
 
 
- n <- min(c(344, n_row))
+ n <- min(c(344, params$n_row))
  proj <- "ee-proj-123"
  ds <- "penguins_data"
  tbl <- "penguins"
