@@ -1,13 +1,19 @@
 
-ARG QUARTO_VERSION="latest"
+ARG R_VER="latest"
+ARG QUARTO_VERSION="1.3.450"
 
-FROM ghcr.io/quarto-dev/quarto:${QUARTO_VERSION} AS QUARTO
+FROM rocker/verse:${R_VER} 
 
-FROM rocker/r-ver:4.3
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget
 
-RUN apt update && apt install -y pandoc
+RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb -O ~/quarto.deb
 
-COPY --from=QUARTO /usr/local/bin/quarto /usr/local/bin/quarto
+# Install the latest version of Quarto
+RUN apt-get install --yes ~/quarto.deb
+
+# Remove the installer
+RUN rm ~/quarto.deb
 
 COPY . .
 
