@@ -22,13 +22,13 @@ library(glue)
 
  con <- dbConnect(
      bigrquery::bigquery(),
-     project = "ee-proj-123",
-     dataset = "penguins_data"
+     project = proj,
+     dataset = ds
  )
 
  q <- glue_sql("
      SELECT *
-     FROM `[ee-proj-123].[penguins_data].[penguins]`
+     FROM `ee-proj-123.penguins_data.penguins`
      LIMIT {n}
  ", .con = con)
 
