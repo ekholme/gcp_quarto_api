@@ -7,7 +7,6 @@ function(n_row = 10) {
     tmp <- paste0(tmp, ".html")
     quarto::quarto_render("report_template.qmd",
         output_file = tmp,
-        # output_format = "html",
         execute_params = list(n_row = n_row)
     )
 

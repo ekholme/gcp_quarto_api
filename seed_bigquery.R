@@ -1,7 +1,8 @@
+#install.packages(c("bigrquery", "palmerpenguins"))
 library(bigrquery)
 library(palmerpenguins)
 
-x <- bq_dataset("ee-proj-123", "penguins_data")
+x <- bq_dataset("MY-PROJECT", "penguins_data")
 
 bq_dataset_create(x)
 
